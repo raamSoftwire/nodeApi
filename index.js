@@ -1,4 +1,4 @@
-const User = require("./controllers/user.js");
+const User = require("./routes/user");
 
 const express = require('express');
 const app = express();
@@ -8,7 +8,7 @@ const swaggerUi = require('swagger-ui-express'), swaggerDocument = require('./sw
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-app.get('/users',  User.findAll);
+app.use('/users', User);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
