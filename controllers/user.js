@@ -5,3 +5,9 @@ exports.findAll = async (req, res) => {
     const users = await User.findAll();
     res.send(users)
 };
+
+exports.findById = async (req, res) => {
+    const id = req.params.id;
+    const user = await User.findByPk(id);
+    res.send(user)
+};

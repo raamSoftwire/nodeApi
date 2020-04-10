@@ -23,6 +23,20 @@
           }
         }
       }
+    },
+    "/users/:id": {
+      "get": {
+        "summary": "Returns a single user.",
+        "description": "Optional extended description in Markdown.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }
