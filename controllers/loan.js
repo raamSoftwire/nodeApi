@@ -1,4 +1,5 @@
 const db = require('../models');
+const moment = require('moment');
 const Loan = db.loan;
 const Op = db.Sequelize.Op;
 
@@ -34,11 +35,11 @@ exports.create = async (req, res) => {
             res.status(400).send({message: 'Content can not be empty'});
             return;
         }
-        // TODO add 7 days to the due date here
+
         const newLoan = {
             user_id: req.body.userId,
             copy_id: req.body.copyId,
-            return_due_date: Date.now()
+            return_due_date: moment().add(7, 'days').toDate()
         };
         await Loan.create(newLoan);
         res.status(201).send(newLoan)
