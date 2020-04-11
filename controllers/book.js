@@ -2,42 +2,74 @@ const db = require('../models');
 const Book = db.book;
 
 exports.findAll = async (req, res) => {
-    const books = await Book.findAll();
-    res.send(books)
+    try {
+        const books = await Book.findAll();
+        res.send(books)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.findById = async (req, res) => {
-    const id = req.params.id;
-    const book = await Book.findByPk(id);
-    res.send(book)
+    try {
+        const id = req.params.id;
+        const book = await Book.findByPk(id);
+
+        if(!book) {
+            res.status(404).send({message: 'Book not found'})
+        }
+
+        res.send(book)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.create = async (req, res) => {
-    if (!req.body.title || !req.body.author || !req.body.isbn) {
-        res.status(400).send({message: "Content can not be empty!"});
-        return;
-    }
-    const book = {
-        title: req.body.title,
-        author: req.body.author,
-        isbn: req.body.isbn
-    };
-    await Book.create(book);
+    try {
+        if (!req.body.title || !req.body.author || !req.body.isbn) {
+            res.status(400).send({message: "Content can not be empty"});
+        }
+        const newBook = {
+            title: req.body.title,
+            author: req.body.author,
+            isbn: req.body.isbn
+        };
+        await Book.create(newBook);
 
-    // TODO need to also create an copy here
-    res.send(book)
+        // TODO need to also create a copy here
+        res.status(201).send(newBook)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.update = async (req, res) => {
-    const id = req.params.id;
-    const book = {
-        title: req.body.title,
-        author: req.body.author,
-        isbn: req.body.isbn
-    }
-    await Book.update(book, {where: { id: id }});
+    try {
+        const id = req.params.id;
+        const book = await Book.findByPk(id);
 
-    // TODO think more carefully about what to return here
-    // Error handling and status codes
-    res.send("Book updated");
+        if(!book) {
+            res.status(404).send({message: 'Book not found'})
+        }
+
+        if (!req.body.title || !req.body.author || !req.body.isbn) {
+            res.status(400).send({message: "Content can not be empty"});
+        }
+
+        const newBook = {
+            title: req.body.title,
+            author: req.body.author,
+            isbn: req.body.isbn
+        };
+
+        await Book.update(newBook, {where: { id: id }});
+        res.status(204).end();
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };

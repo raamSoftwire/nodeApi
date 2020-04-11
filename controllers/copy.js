@@ -3,40 +3,69 @@ const Copy = db.copy;
 const Op = db.Sequelize.Op;
 
 exports.findAll = async (req, res) => {
-    const title = req.query.title;
-    // TODO can we extend this to search on author too?
-    // Op has an OR function
-    const condition = title ? {title: { [Op.iLike]: `%${title}%`}} : null;
-    const copies = await Copy.findAll({where: condition});
-    res.send(copies)
+    try {
+        const title = req.query.title;
+        // TODO can we extend this to search on author too?
+        // Op has an OR function
+        const condition = title ? {title: { [Op.iLike]: `%${title}%`}} : null;
+        const copies = await Copy.findAll({where: condition});
+        res.send(copies)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.findById = async (req, res) => {
-    const id = req.params.id;
-    const copy = await Copy.findByPk(id);
-    res.send(copy)
+    try {
+        const id = req.params.id;
+        const copy = await Copy.findByPk(id);
+
+        if (!copy) {
+            res.status(404).send({message : 'Copy not found'})
+        }
+
+        res.send(copy)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.create = async (req, res) => {
-    if (!req.body.bookId) {
-        res.status(400).send({message: "Content can not be empty!"});
-        return;
-    }
+    try {
+        if (!req.body.bookId) {
+            res.status(400).send({message: "Content can not be empty"});
+            return;
+        }
 
-    // TODO need to add a check here that the book exists in thge DB
-    const copy = {book_id: req.body.bookId,};
-    await Copy.create(copy);
-    res.send(copy)
+        // TODO need to add a check here that the book exists in the DB
+        const newCopy = {book_id: req.body.bookId,};
+        await Copy.create(newCopy);
+        res.send(newCopy)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.delete = async (req, res) => {
-    const id = req.params.id;
-    await Copy.destroy({where: { id: id }});
+    try {
+        const id = req.params.id;
+        const copy = await Copy.findByPk(id);
 
-    // TODO think more carefully about what to return here
-    // Error handling and status codes
-    res.send("Copy deleted")
+        if (!copy) {
+            res.status(404).send({message: 'Copy not found'})
+        }
 
-    // TODO if that was the last copy of that book, then also remove the book?
-    // Or leave it in, so we have a historic record of books we've had
+        await Copy.destroy({where: { id: id }});
+        res.status(204).end();
+
+        // TODO if that was the last copy of that book, then also remove the book?
+        // Or leave it in, so we have a historic record of books we've had
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
+
 };

@@ -3,42 +3,84 @@ const User = db.user;
 const Op = db.Sequelize.Op;
 
 exports.findAll = async (req, res) => {
-    const name = req.query.name;
-    const condition = name ? {name: { [Op.iLike]: `%${name}%`}} : null;
-    const users = await User.findAll({where: condition});
-    res.send(users)
+    try {
+        const name = req.query.name;
+        const condition = name ? {name: { [Op.iLike]: `%${name}%`}} : null;
+        const users = await User.findAll({where: condition});
+        res.send(users)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.findById = async (req, res) => {
-    const id = req.params.id;
-    const user = await User.findByPk(id);
-    res.send(user)
+    try {
+        const id = req.params.id;
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            res.status(404).send({message : 'User not found'})
+        }
+
+        res.send(user)
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.create = async (req, res) => {
-    if (!req.body.name) {
-        res.status(400).send({message: "Content can not be empty!"});
-        return;
+    try {
+        if (!req.body.name) {
+            res.status(400).send({message: 'Content can not be empty'});
+        }
+        const newUser = {name: req.body.name};
+        await User.create(newUser);
+        res.status(201).send(newUser)
     }
-    const user = {name: req.body.name,};
-    await User.create(user);
-    res.send(user)
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
 
 exports.update = async (req, res) => {
-    const id = req.params.id;
-    await User.update(req.body, {where: { id: id }});
+    try {
+        const id = req.params.id;
+        const user = await User.findByPk(id);
 
-    // TODO think more carefully about what to return here
-    // Error handling and status codes
-    res.send("User updated");
+        if (!user) {
+            res.status(404).send({message : 'User not found'})
+        }
+
+        if (!req.body.name) {
+            res.status(400).send({message: 'Content can not be empty'});
+        }
+
+        const newUser = {name: req.body.name};
+
+        await User.update(newUser, {where: { id: id }});
+        res.status(204).end();
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
+
 };
 
 exports.delete = async (req, res) => {
-    const id = req.params.id;
-    await User.destroy({where: { id: id }});
+    try {
+        const id = req.params.id;
+        const user = await User.findByPk(id);
 
-    // TODO think more carefully about what to return here
-    // Error handling and status codes
-    res.send("User deleted")
+        if (!user) {
+            res.status(404).send({message: 'User not found'})
+        }
+
+        await User.destroy({where: { id: id }});
+        res.status(204).end();
+    }
+    catch {
+        res.status(400).send({message: 'Something went wrong'})
+    }
 };
