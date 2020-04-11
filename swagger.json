@@ -12,28 +12,54 @@
   "paths": {
     "/users": {
       "get": {
-        "summary": "Returns a list of users.",
-        "description": "Optional extended description in Markdown.",
+        "summary": "Get all users.",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong"
           }
         }
       }
     },
     "/users/:id": {
       "get": {
-        "summary": "Returns a single user.",
-        "description": "Optional extended description in Markdown.",
+        "summary": "Get a single user by id.",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "400": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/users/:id": {
+      "post": {
+        "summary": "Create a user.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Content can not be empty"
+          },
+          "400": {
+            "description": "Something went wrong"
           }
         }
       }
