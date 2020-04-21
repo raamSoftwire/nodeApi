@@ -17,13 +17,17 @@ exports.findAll = async (req, res) => {
 exports.findById = async (req, res) => {
     try {
         const id = req.params.id;
+        if (isNaN(id)) {
+            res.status(400).send({message: 'User ID must be a number'});
+        }
+
         const user = await User.findByPk(id);
 
         if (!user) {
-            res.status(404).send({message : 'User not found'})
+            res.status(404).send({message : 'User not found'});
         }
 
-        res.send(user)
+        res.send(user);
     }
     catch {
         res.status(400).send({message: 'Something went wrong'})
