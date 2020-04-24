@@ -12,7 +12,6 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-sequelize.sync();
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
