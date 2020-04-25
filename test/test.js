@@ -10,7 +10,7 @@ const db = require('../models');
 chai.use(chaiHttp);
 
 describe('Users', () => {
-    
+
     describe('GET /users/', () => {
         it('should return all users', async () => {
             await db.user.create({name: "Joe"});
