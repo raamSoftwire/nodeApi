@@ -10,11 +10,7 @@ const db = require('../models');
 chai.use(chaiHttp);
 
 describe('Users', () => {
-
-    beforeEach(async () => {
-        await db.user.destroy({ truncate: true, restartIdentity: true });
-    });
-
+    
     describe('GET /users/', () => {
         it('should return all users', async () => {
             await db.user.create({name: "Joe"});
