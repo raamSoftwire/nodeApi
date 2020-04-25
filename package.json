@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha --exit",
+    "code-coverage-report": "cross-env NODE_ENV=test nyc --reporter=html mocha --exit",
     "lint": "eslint . --fix"
   },
   "author": "",
