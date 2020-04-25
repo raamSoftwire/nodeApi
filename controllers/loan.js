@@ -1,21 +1,21 @@
-const db = require('../models');
-const moment = require('moment');
-const Loan = db.loan;
+const db = require('../models')
+const moment = require('moment')
+const Loan = db.loan
 
 exports.findAll = async (req, res) => {
     try {
-        const loans = await Loan.findAll();
+        const loans = await Loan.findAll()
         res.send(loans)
     }
     catch {
         res.status(400).send({message: 'Something went wrong'})
     }
-};
+}
 
 exports.findById = async (req, res) => {
     try {
-        const id = req.params.id;
-        const loan = await Loan.findByPk(id);
+        const id = req.params.id
+        const loan = await Loan.findByPk(id)
 
         if (!loan) {
             res.status(404).send({message : 'Loan not found'})
@@ -26,27 +26,27 @@ exports.findById = async (req, res) => {
     catch {
         res.status(400).send({message: 'Something went wrong'})
     }
-};
+}
 
 exports.create = async (req, res) => {
     try {
         if (!req.body.userId || !req.body.copyId) {
-            res.status(400).send({message: 'Content can not be empty'});
-            return;
+            res.status(400).send({message: 'Content can not be empty'})
+            return
         }
 
         const newLoan = {
             user_id: req.body.userId,
             copy_id: req.body.copyId,
             return_due_date: moment().add(7, 'days').toDate()
-        };
-        await Loan.create(newLoan);
+        }
+        await Loan.create(newLoan)
         res.status(201).send(newLoan)
     }
     catch {
         res.status(400).send({message: 'Something went wrong'})
     }
-};
+}
 
 // exports.update = async (req, res) => {
 //     //TODO look up current loan, only adjust the due date

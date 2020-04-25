@@ -1,24 +1,24 @@
-'use strict';
+'use strict'
 
-const Sequelize = require('sequelize');
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
+const Sequelize = require('sequelize')
+const env = process.env.NODE_ENV || 'development'
+const config = require(__dirname + '/../config/config.json')[env]
+const db = {}
 
-let sequelize;
+let sequelize
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  sequelize = new Sequelize(process.env[config.use_env_variable], config)
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(config.database, config.username, config.password, config)
 }
 
-sequelize.sync();
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+sequelize.sync()
+db.sequelize = sequelize
+db.Sequelize = Sequelize
 
-db.user = require("./user.js")(sequelize, Sequelize);
-db.loan = require("./loan.js")(sequelize, Sequelize);
-db.book = require("./book.js")(sequelize, Sequelize);
-db.copy = require("./copy.js")(sequelize, Sequelize);
+db.user = require('./user.js')(sequelize, Sequelize)
+db.loan = require('./loan.js')(sequelize, Sequelize)
+db.book = require('./book.js')(sequelize, Sequelize)
+db.copy = require('./copy.js')(sequelize, Sequelize)
 
-module.exports = db;
+module.exports = db
