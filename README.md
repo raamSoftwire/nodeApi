@@ -1,3 +1,5 @@
+![](https://github.com/raamSoftwire/nodeApi/workflows/CI%20-%20run%20linting%20and%20tests/badge.svg)
+
 #Building a Node.js API
 
 This is a dummy project to learn to use the following technologies and tools.
