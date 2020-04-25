@@ -13,7 +13,7 @@
     "parserOptions": {
         "ecmaVersion": 2018
     },
-    "ignorePatterns": ["migrations/", "node_modules/"],
+    "ignorePatterns": ["test/","migrations/", "node_modules/"],
     "rules": {
     }
 }

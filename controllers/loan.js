@@ -1,7 +1,6 @@
 const db = require('../models');
 const moment = require('moment');
 const Loan = db.loan;
-const Op = db.Sequelize.Op;
 
 exports.findAll = async (req, res) => {
     try {
