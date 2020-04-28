@@ -28,38 +28,34 @@ describe('Books', () => {
                 isbn: "123-4-890"
             });
 
-            chai.request(app).get('/books/')
-                .end( (err, res) => {
-                    expect(res.body).to.have.lengthOf(2);
-                    expect(res.body[0].title).to.equal("10 Billion")
-                    expect(res.body[1].title).to.equal("What If")
-                    expect(res).to.have.status(200);
-                })
+            let res = await chai.request(app).get('/books/')
+                
+            expect(res.body).to.have.lengthOf(2);
+            expect(res.body[0].title).to.equal("10 Billion")
+            expect(res.body[1].title).to.equal("What If")
+            expect(res).to.have.status(200);
         });
     });
 
     describe('GET /books/:id', () => {
         it('should return book if id is found', async () => {
 
-            chai.request(app).get('/books/2')
-                .end( (err, res) => {
-                    expect(res.body[1].title).to.equal("What If")
-                    expect(res).to.have.status(200);
-                })
+            let res = await chai.request(app).get('/books/2')
+                
+            expect(res.body.title).to.equal("What If")
+            expect(res).to.have.status(200);
         });
 
         it('should return 404 if id is not found', async () => {
-            chai.request(app).get('/books/1000')
-                .end( (err, res) => {
-                    expect(res).to.have.status(404);
-                })
+            let res = await chai.request(app).get('/books/1000')
+                
+            expect(res).to.have.status(404);
         });
 
         it('should return 400 if id not valid', async () => {
-            chai.request(app).get('/books/1abc')
-                .end( (err, res) => {
-                    expect(res).to.have.status(400);
-                })
+            let res = await chai.request(app).get('/books/1abc')
+                
+            expect(res).to.have.status(400);
         })
     });
 
@@ -71,27 +67,23 @@ describe('Books', () => {
                 isbn: "456-4-890"
             };
 
-            chai.request(app).post('/books/')
-                .send(newBook)
-                .end( (err, res) => {
-                    expect(res.body).to.include({title: newBook.title});
-                    expect(res).to.have.status(201);
-                })
+            let res = await chai.request(app).post('/books/').send(newBook)
+                
+            expect(res.body).to.include({title: newBook.title});
+            expect(res).to.have.status(201);
         });
 
         it('should return 400 if content is not given', async () => {
-            chai.request(app).post('/books/')
-                .end( (err, res) => {
-                    expect(res).to.have.status(400);
-                })
+            let res = await chai.request(app).post('/books/')
+                
+            expect(res).to.have.status(400);
         });
 
         it('should return 400 if content does not contain a title, author or ISBN', async () => {
-            chai.request(app).post('/books/')
+            let res = await chai.request(app).post('/books/')
                 .send({publisher: "Penguin"})
-                .end( (err, res) => {
-                    expect(res).to.have.status(400);
-                })
+                
+            expect(res).to.have.status(400);
         })
     });
 
@@ -102,11 +94,9 @@ describe('Books', () => {
                 author: "Randall Munroe",
                 isbn: "123-4-890"
             };
-            chai.request(app).put('/books/2')
-                .send(updatedBook)
-                .end( (err, res) => {
-                    expect(res).to.have.status(204);
-                })
+            let res = await chai.request(app).put('/books/2').send(updatedBook)
+                
+            expect(res).to.have.status(204);
         });
 
         it('should return 404 if id is not found', async () => {
@@ -115,26 +105,21 @@ describe('Books', () => {
                 author: "Joe Bloggs",
                 isbn: "123-4-890"
             };
-            chai.request(app).put('/books/1000')
-                .send(updatedBook)
-                .end( (err, res) => {
-                    expect(res).to.have.status(404);
-                })
+            let res = await chai.request(app).put('/books/1000').send(updatedBook)
+                
+            expect(res).to.have.status(404);
         });
 
         it('should return 400 if content is not given', async () => {
-            chai.request(app).put('/books/2')
-                .end( (err, res) => {
-                    expect(res).to.have.status(400);
-                })
+            let res = await chai.request(app).put('/books/2')
+                
+            expect(res).to.have.status(400);
         });
 
         it('should return 400 if content does not contain a title, author or ISBN', async () => {
-            chai.request(app).put('/books/2')
-                .send({title: "Bhagavad Gita"})
-                .end( (err, res) => {
-                    expect(res).to.have.status(400);
-                })
+            let res = await chai.request(app).put('/books/2').send({title: "Bhagavad Gita"})
+                
+            expect(res).to.have.status(400);
         })
     });
 

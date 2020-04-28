@@ -7,13 +7,16 @@ exports.findAll = async (req, res) => {
         res.send(books)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
 exports.findById = async (req, res) => {
     try {
         const id = req.params.id
+        if (isNaN(id)) {
+            res.status(400).send({message: 'Book ID must be a number'})
+        }
         const book = await Book.findByPk(id)
 
         if(!book) {
@@ -23,7 +26,7 @@ exports.findById = async (req, res) => {
         res.send(book)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
@@ -43,7 +46,7 @@ exports.create = async (req, res) => {
         res.status(201).send(newBook)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
@@ -70,6 +73,6 @@ exports.update = async (req, res) => {
         res.status(204).end()
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
