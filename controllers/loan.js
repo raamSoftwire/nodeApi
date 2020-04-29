@@ -8,13 +8,16 @@ exports.findAll = async (req, res) => {
         res.send(loans)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
 exports.findById = async (req, res) => {
     try {
         const id = req.params.id
+        if (isNaN(id)) {
+            res.status(400).send({message: 'Loan ID must be a number'})
+        }
         const loan = await Loan.findByPk(id)
 
         if (!loan) {
@@ -24,7 +27,7 @@ exports.findById = async (req, res) => {
         res.send(loan)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
@@ -44,7 +47,7 @@ exports.create = async (req, res) => {
         res.status(201).send(newLoan)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 

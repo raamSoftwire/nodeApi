@@ -8,8 +8,4 @@ router.get('/:id', Loan.findById)
 
 router.post('/', Loan.create)
 
-// router.put('/:id', Loan.update);
-
-// router.delete('/:id', Loan.delete);
-
 module.exports = router

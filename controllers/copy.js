@@ -12,13 +12,16 @@ exports.findAll = async (req, res) => {
         res.send(copies)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
 exports.findById = async (req, res) => {
     try {
         const id = req.params.id
+        if (isNaN(id)) {
+            res.status(400).send({message: 'Copy ID must be a number'})
+        }
         const copy = await Copy.findByPk(id)
 
         if (!copy) {
@@ -28,7 +31,7 @@ exports.findById = async (req, res) => {
         res.send(copy)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
@@ -42,10 +45,10 @@ exports.create = async (req, res) => {
         // TODO need to add a check here that the book exists in the DB
         const newCopy = {book_id: req.body.bookId,}
         await Copy.create(newCopy)
-        res.send(newCopy)
+        res.status(201).send(newCopy)
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 }
 
@@ -65,7 +68,7 @@ exports.delete = async (req, res) => {
         // Or leave it in, so we have a historic record of books we've had
     }
     catch {
-        res.status(400).send({message: 'Something went wrong'})
+        res.status(400).end({message: 'Something went wrong'})
     }
 
 }
