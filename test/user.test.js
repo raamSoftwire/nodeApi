@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 // This means that even if we destroy the data and reset the primary key with restartIdentity, the rowIds do not reset
 // Therefore each test in this file adds to the DB and potentially affects the following tests
 
-describe('Users2', () => {
+describe('Users', () => {
 
     describe('GET /users/', () => {
         it('should return all users', async () => {

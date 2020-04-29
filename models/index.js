@@ -12,13 +12,14 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config)
 }
 
-sequelize.sync()
-db.sequelize = sequelize
-db.Sequelize = Sequelize
-
 db.user = require('./user.js')(sequelize, Sequelize)
-db.loan = require('./loan.js')(sequelize, Sequelize)
 db.book = require('./book.js')(sequelize, Sequelize)
 db.copy = require('./copy.js')(sequelize, Sequelize)
+db.loan = require('./loan.js')(sequelize, Sequelize)
+
+sequelize.sync()
+
+db.sequelize = sequelize
+db.Sequelize = Sequelize
 
 module.exports = db
