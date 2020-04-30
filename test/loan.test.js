@@ -3,18 +3,16 @@ const chai = require('chai');
 const expect = require('chai').expect;
 const moment = require('moment')
 
-const chaiHttp = require('chai-http');
 const app = require('../index.js');
-
 const db = require('../models');
-
+const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-// SQLite keeps track of the largest ROWID that a table has ever held using the special SQLITE_SEQUENCE table.
-// This means that even if we destroy the data and reset the primary key with restartIdentity, the rowIds do not reset
-// Therefore each test in this file adds to the DB and potentially affects the following tests
-
 describe('Loans', () => {
+
+    beforeEach(async () => {
+        await db.sequelize.sync({force: true});
+    })
 
     describe('GET /loans/', () => {
         it('should return all loans', async () => {
@@ -55,9 +53,22 @@ describe('Loans', () => {
 
     describe('GET /loans/:id', () => {
         it('should return loan if id is found', async () => {
-            let res = await chai.request(app).get('/loans/2')
+            await db.user.create({name: "Alice"});
+            await db.book.create({
+                title: "Poverty Safari",
+                author: "Darren McGarvey",
+                isbn: "456-4-890"
+            });
+            await db.copy.create({book_id: 1})
+            await db.loan.create({
+                user_id: 1,
+                copy_id: 1,
+                return_due_date: moment().add(7, 'days').toDate()
+            })
 
-            expect(res.body.copy_id).to.equal(2);
+            let res = await chai.request(app).get('/loans/1')
+
+            expect(res.body.copy_id).to.equal(1);
             expect(res).to.have.status(200);
 
         });
