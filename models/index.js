@@ -17,8 +17,6 @@ db.book = require('./book.js')(sequelize, Sequelize)
 db.copy = require('./copy.js')(sequelize, Sequelize)
 db.loan = require('./loan.js')(sequelize, Sequelize)
 
-sequelize.sync()
-
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 

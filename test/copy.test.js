@@ -2,18 +2,16 @@ const describe = require("mocha").describe;
 const chai = require('chai');
 const expect = require('chai').expect;
 
-const chaiHttp = require('chai-http');
 const app = require('../index.js');
-
 const db = require('../models');
-
+const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
-// SQLite keeps track of the largest ROWID that a table has ever held using the special SQLITE_SEQUENCE table.
-// This means that even if we destroy the data and reset the primary key with restartIdentity, the rowIds do not reset
-// Therefore each test in this file adds to the DB and potentially affects the following tests
-
 describe('Copies', () => {
+
+    beforeEach(async () => {
+        await db.sequelize.sync({force: true});
+    })
 
     describe('GET /copies/', () => {
         it('should return all copies', async () => {
@@ -40,9 +38,15 @@ describe('Copies', () => {
 
     describe('GET /copies/:id', () => {
         it('should return copy if id is found', async () => {
-            let res = await chai.request(app).get('/copies/2')
+            await db.book.create({
+                title: "10 Billion",
+                author: "Stephen Emmott",
+                isbn: "123-4-567"
+            });
+            await db.copy.create({book_id: 1})
+            let res = await chai.request(app).get('/copies/1')
 
-            expect(res.body.book_id).to.equal(2);
+            expect(res.body.book_id).to.equal(1);
             expect(res).to.have.status(200);
 
         });
@@ -89,6 +93,12 @@ describe('Copies', () => {
 
     describe('DELETE /copies/:id', () => {
         it('should delete copy if copy is found', async () => {
+            await db.book.create({
+                title: "10 Billion",
+                author: "Stephen Emmott",
+                isbn: "123-4-567"
+            });
+            await db.copy.create({book_id: 1})
             let res = await chai.request(app).delete('/copies/1')
 
             expect(res).to.have.status(204);
