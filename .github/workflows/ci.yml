@@ -1,4 +1,4 @@
-name: CI - run linting and tests
+name: linting and tests
 
 on:
   push:
