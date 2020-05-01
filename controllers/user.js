@@ -34,20 +34,6 @@ exports.findById = async (req, res) => {
     }
 }
 
-exports.create = async (req, res) => {
-    try {
-        if (!req.body.name) {
-            res.status(400).send({message: 'Content can not be empty'})
-        }
-        const newUser = {name: req.body.name}
-        await User.create(newUser)
-        res.status(201).send(newUser)
-    }
-    catch {
-        res.status(400).end({message: 'Something went wrong'})
-    }
-}
-
 exports.update = async (req, res) => {
     try {
         const id = req.params.id
