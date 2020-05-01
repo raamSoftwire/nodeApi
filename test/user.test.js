@@ -49,28 +49,6 @@ describe('Users', () => {
         })
     });
 
-    describe('POST /users/', () => {
-        it('should create user if correct content is given', async () => {
-            const newUser = {name: "Alice"};
-            let res = await chai.request(app).post('/users/').send(newUser)
-
-            expect(res.body).to.include({name: newUser.name});
-            expect(res).to.have.status(201);
-        });
-
-        it('should return 400 if content is not given', async () => {
-            let res = await chai.request(app).post('/users/')
-
-            expect(res).to.have.status(400);
-        });
-
-        it('should return 400 if content does not contain a name', async () => {
-            let res = await chai.request(app).post('/users/').send({age: 21})
-
-            expect(res).to.have.status(400);
-        })
-    });
-
     describe('PUT /users/:id', () => {
         it('should update user if correct content is given', async () => {
             await db.user.create({name: "Alice"});
