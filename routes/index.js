@@ -1,11 +1,13 @@
-const User = require('./user')
+const Auth = require('./auth')
 const Book = require('./book')
-const Loan = require('./loan')
 const Copy = require('./copy')
+const Loan = require('./loan')
+const User = require('./user')
 
 module.exports = {
-    User,
+    Auth,
     Book,
+    Copy,
     Loan,
-    Copy
+    User
 }

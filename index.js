@@ -3,17 +3,18 @@ const app = express()
 const port = 3000
 const swaggerUi = require('swagger-ui-express'), swaggerDocument = require('./swagger.json')
 
-const {User, Book, Copy, Loan} = require('./routes/index')
+const {Auth, Book, Copy, Loan, User} = require('./routes/index')
 
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.use('/users', User)
+app.use('/auth', Auth)
 app.use('/books', Book)
 app.use('/copies', Copy)
 app.use('/loans', Loan)
+app.use('/users', User)
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
