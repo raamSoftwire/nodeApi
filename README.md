@@ -1,4 +1,4 @@
-![](https://github.com/raamSoftwire/nodeApi/workflows/CI%20-%20run%20linting%20and%20tests/badge.svg)
+![](https://github.com/raamSoftwire/nodeApi/workflows/linting%20and%20tests/badge.svg)
 ![nycrc config on GitHub](https://img.shields.io/nycrc/raamSoftwire/nodeApi?color=green&config=.nycrc&preferredThreshold=lines)
 #Building a Node.js API
 
