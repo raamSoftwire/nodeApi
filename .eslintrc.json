@@ -18,6 +18,7 @@
         "semi": [2, "never"],
         "quotes": ["error" ,"single", { "allowTemplateLiterals": true }],
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
-        "eol-last": ["error", "always"]
+        "eol-last": ["error", "always"],
+        "no-var": "error"
     }
 }
