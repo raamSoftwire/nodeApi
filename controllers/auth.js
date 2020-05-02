@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const privateKey = process.env.JWT_PRIVATE_KEY
-const saltRounds = process.env.JWT_SALT_ROUNDS
+const saltRounds = parseInt(process.env.JWT_SALT_ROUNDS, 10)
 const User = db.user
 
 exports.register = async (req, res) => {
@@ -36,7 +36,7 @@ exports.signIn = async (req, res) => {
 
         if (match) {
             const token = jwt.sign({ userId: user.id }, privateKey, { expiresIn: 60 * 15 })
-            res.json({success: true, token})
+            res.status(200).send({success: true, token})
         } else {
             res.status(401).send({success: false, message: 'Authentication failed. Wrong password'})
         }
