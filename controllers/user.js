@@ -39,7 +39,8 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const token = req.headers['x-access-token']
+        const token = req.headers['authorization'].split(' ')[1]
+
         if (!token) {
             res.status(401).send({message: 'No token provided.'})
         }
