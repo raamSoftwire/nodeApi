@@ -1,6 +1,9 @@
 const db = require('../models')
 const User = db.user
 const Op = db.Sequelize.Op
+const jwt = require('jsonwebtoken')
+
+const privateKey = 'secret'
 
 exports.findAll = async (req, res) => {
     try {
@@ -36,6 +39,14 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+        const token = req.headers['x-access-token']
+        if (!token) {
+            res.status(401).send({message: 'No token provided.'})
+        }
+
+        const decodedToken = jwt.verify(token, privateKey)
+        console.log(decodedToken)
+
         const id = req.params.id
         const user = await User.findByPk(id)
 
