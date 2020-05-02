@@ -51,30 +51,81 @@ describe('Users', () => {
 
     describe('PUT /users/:id', () => {
         it('should update user if correct content is given', async () => {
-            await db.user.create({name: "Alice"});
-            const updatedUser = {name: "Alice Smith"};
-            let res = await chai.request(app).put('/users/1').send(updatedUser)
+            const user = {name: "Bob", password: "Pa55word"}
+            await chai.request(app).post('/auth/register').send(user)
+            let signInRes = await chai.request(app).post('/auth/sign-in').send(user)
+            const token = signInRes.body.token
+
+            const updatedUser = {name: "Bob Smith"};
+            let res = await chai.request(app).put('/users/1')
+                .set('authorization', `Bearer ${token}`)
+                .send(updatedUser)
 
             expect(res).to.have.status(204);
         });
 
+        it('should return 401 if token is not provided', async () => {
+            const user = {name: "Bob", password: "Pa55word"}
+            await chai.request(app).post('/auth/register').send(user)
+            await chai.request(app).post('/auth/sign-in').send(user)
+
+            const updatedUser = {name: "Bob Smith"};
+            let res = await chai.request(app).put('/users/1')
+                .send(updatedUser)
+
+            expect(res).to.have.status(401);
+            expect(res.body.message).to.equal('No token provided.')
+        });
+
+        it('should return 400 if token is invalid', async () => {
+            const user = {name: "Bob", password: "Pa55word"}
+            await chai.request(app).post('/auth/register').send(user)
+            await chai.request(app).post('/auth/sign-in').send(user)
+
+            const updatedUser = {name: "Bob Smith"};
+            let res = await chai.request(app).put('/users/1')
+                .set('authorization', 'Bearer invalid_token')
+                .send(updatedUser)
+
+            expect(res).to.have.status(401);
+            expect(res.body.message).to.equal('Invalid token.')
+        });
+
         it('should return 404 if id is not found', async () => {
-            const updatedUser = {name: "Jane Doe"};
-            let res = await chai.request(app).put('/users/1000').send(updatedUser)
+            const user = {name: "Bob", password: "Pa55word"}
+            await chai.request(app).post('/auth/register').send(user)
+            let signInRes = await chai.request(app).post('/auth/sign-in').send(user)
+            const token = signInRes.body.token
+
+            const updatedUser = {name: "Bob Smith"};
+            let res = await chai.request(app).put('/users/1000')
+                .set('authorization', `Bearer ${token}`)
+                .send(updatedUser)
 
             expect(res).to.have.status(404);
         });
 
         it('should return 400 if content is not given', async () => {
-            await db.user.create({name: "Alice"});
+            const user = {name: "Bob", password: "Pa55word"}
+            await chai.request(app).post('/auth/register').send(user)
+            let signInRes = await chai.request(app).post('/auth/sign-in').send(user)
+            const token = signInRes.body.token
+
             let res = await chai.request(app).put('/users/1')
+                .set('authorization', `Bearer ${token}`)
 
             expect(res).to.have.status(400);
         });
 
         it('should return 400 if content does not contain a name', async () => {
-            await db.user.create({name: "Alice"});
-            let res = await chai.request(app).put('/users/1').send({age: 21})
+            const user = {name: "Bob", password: "Pa55word"}
+            await chai.request(app).post('/auth/register').send(user)
+            let signInRes = await chai.request(app).post('/auth/sign-in').send(user)
+            const token = signInRes.body.token
+
+            let res = await chai.request(app).put('/users/1')
+                .set('authorization', `Bearer ${token}`)
+                .send({age: 21})
 
             expect(res).to.have.status(400);
         })

@@ -39,14 +39,17 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const token = req.headers['authorization'].split(' ')[1]
-
-        if (!token) {
+        const authHeader = req.headers['authorization']
+        if (!authHeader || !authHeader.split(' ')[1]) {
             res.status(401).send({message: 'No token provided.'})
         }
 
-        const decodedToken = jwt.verify(token, privateKey)
-        console.log(decodedToken)
+        const token = authHeader.split(' ')[1]
+        try {
+            jwt.verify(token, privateKey)
+        } catch {
+            res.status(401).send({message: 'Invalid token.'})
+        }
 
         const id = req.params.id
         const user = await User.findByPk(id)
