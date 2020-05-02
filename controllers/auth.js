@@ -1,4 +1,7 @@
 const db = require('../models')
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
 const User = db.user
 
 exports.register = async (req, res) => {
@@ -7,7 +10,9 @@ exports.register = async (req, res) => {
         if (!req.body.name || !req.body.password) {
             res.status(400).send({message: 'Content can not be empty'})
         }
-        const newUser = {name: req.body.name, password: req.body.password}
+
+        const hash = await bcrypt.hash(req.body.password, saltRounds);
+        const newUser = {name: req.body.name, password: hash}
         await User.create(newUser)
         res.status(201).send(newUser)
     }
@@ -27,7 +32,9 @@ exports.signIn = async (req, res) => {
             res.status(401).send({message: 'Authentication failed. User not found'})
         }
 
-        if (user.password === password) {
+        const match = await bcrypt.compare(password, user.password);
+
+        if (match) {
             res.json({success: true, token: 'JWT here'})
         } else {
             res.status(401).send({success: false, message: 'Authentication failed. Wrong password'})
