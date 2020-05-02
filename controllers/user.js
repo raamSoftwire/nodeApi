@@ -3,7 +3,7 @@ const User = db.user
 const Op = db.Sequelize.Op
 const jwt = require('jsonwebtoken')
 
-const privateKey = 'secret'
+const privateKey = process.env.JWT_PRIVATE_KEY
 
 exports.findAll = async (req, res) => {
     try {

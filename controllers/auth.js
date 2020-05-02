@@ -2,8 +2,8 @@ const db = require('../models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const privateKey = 'secret'
-const saltRounds = 10
+const privateKey = process.env.JWT_PRIVATE_KEY
+const saltRounds = process.env.JWT_SALT_ROUNDS
 const User = db.user
 
 exports.register = async (req, res) => {
