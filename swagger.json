@@ -5,20 +5,52 @@
     "description": "Library management API.",
     "version": "1.0.0"
   },
+
   "host": "api.example.com",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": ""
+    },
+    {
+      "name": "User",
+      "description": ""
+    },
+    {
+      "name": "Book",
+      "description": ""
+    },
+    {
+      "name": "Copy",
+      "description": ""
+    },
+    {
+      "name": "Loan",
+      "description": ""
+    }
+  ],
   "schemes": [
     "https"
   ],
   "paths": {
     "/users": {
       "get": {
+        "tags": [
+          "User"
+        ],
         "summary": "Get all users.",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
           },
           "400": {
             "description": "Something went wrong"
@@ -28,39 +60,609 @@
     },
     "/users/:id": {
       "get": {
-        "summary": "Get a single user by id.",
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user by ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "User ID must be a number"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update a user.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "xml": {
+                "name": "User"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User updated"
+          },
+          "400": {
+            "description": "Content can not be empty"
+          },
+          "401": {
+            "description": "No token provided or invalid token"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete a user.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted"
+          },
+          "400": {
+            "description": "Something went wrong"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/books": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "summary": "Get all books.",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "User not found"
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Book"
+              }
+            }
           },
           "400": {
             "description": "Something went wrong"
           }
         }
-      }
-    },
-    "/users/:id": {
+      },
       "post": {
-        "summary": "Create a user.",
+        "tags": [
+          "Book"
+        ],
+        "summary": "Create new book.",
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "author": {
+                  "type": "string"
+                },
+                "isbn": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "User created"
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Book"
+              }
+            }
+          },
+          "400": {
+            "description": "Content can not be empty"
+          }
+        }
+      }
+    },
+    "/books/:id": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "summary": "Get book by ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "description": "ID of book to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          },
+          "400": {
+            "description": "Book ID must be a number"
+          },
+          "404": {
+            "description": "Book not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Book"
+        ],
+        "summary": "Update a book.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "description": "ID of book to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "author": {
+                  "type": "string"
+                },
+                "isbn": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Book updated"
           },
           "400": {
             "description": "Content can not be empty"
           },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/copies": {
+      "get": {
+        "tags": [
+          "Copy"
+        ],
+        "summary": "Get all copies.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Copy"
+              }
+            }
+          },
           "400": {
             "description": "Something went wrong"
           }
+        }
+      },
+      "post": {
+        "tags": [
+          "Copy"
+        ],
+        "summary": "Create new copy.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create new copy",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "bookId": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Copy"
+              }
+            }
+          },
+          "400": {
+            "description": "Content can not be empty"
+          }
+        }
+      }
+    },
+    "/copies/:id": {
+      "get": {
+        "tags": [
+          "Copy"
+        ],
+        "summary": "Get copy by ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "copyId",
+            "in": "path",
+            "description": "ID of copy to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Copy"
+            }
+          },
+          "400": {
+            "description": "Copy ID must be a number"
+          },
+          "404": {
+            "description": "Copy not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Copy"
+        ],
+        "summary": "Delete a copy.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "copyId",
+            "in": "path",
+            "description": "ID of copy to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Copy deleted"
+          },
+          "400": {
+            "description": "Something went wrong"
+          },
+          "404": {
+            "description": "Copy not found"
+          }
+        }
+      }
+    },
+    "/loans": {
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Get all loans.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Loan"
+              }
+            }
+          },
+          "400": {
+            "description": "Something went wrong"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Create new loan.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create new loan",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "copyId": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Loan"
+              }
+            }
+          },
+          "400": {
+            "description": "Content can not be empty"
+          }
+        }
+      }
+    },
+    "/loans/:id": {
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Get loan by ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "loanId",
+            "in": "path",
+            "description": "ID of loan to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Loan"
+            }
+          },
+          "400": {
+            "description": "Loan ID must be a number"
+          },
+          "404": {
+            "description": "Loan not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Loan": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "copy_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "return_due_date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Copy": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "book_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Book": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "isbn": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     }

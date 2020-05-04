@@ -43,7 +43,7 @@ exports.create = async (req, res) => {
         }
 
         // TODO need to add a check here that the book exists in the DB
-        const newCopy = {book_id: req.body.bookId,}
+        const newCopy = {book_id: req.body.bookId}
         await Copy.create(newCopy)
         res.status(201).send(newCopy)
     }
