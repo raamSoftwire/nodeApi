@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
         res.status(201).send(newUser)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -42,6 +42,6 @@ exports.signIn = async (req, res) => {
         }
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }

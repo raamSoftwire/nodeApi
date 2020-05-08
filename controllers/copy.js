@@ -12,7 +12,7 @@ exports.findAll = async (req, res) => {
         res.send(copies)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -31,7 +31,7 @@ exports.findById = async (req, res) => {
         res.send(copy)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -48,7 +48,7 @@ exports.create = async (req, res) => {
         res.status(201).send(newCopy)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -68,7 +68,7 @@ exports.delete = async (req, res) => {
         // Or leave it in, so we have a historic record of books we've had
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 
 }
