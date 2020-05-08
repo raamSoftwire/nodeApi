@@ -17,11 +17,11 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
-    "pg": "^8.0.0",
+    "moment": "^2.25.3",
+    "pg": "^8.0.3",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.6",
-    "sqlite3": "^4.1.1",
+    "sequelize": "^5.21.7",
+    "sqlite3": "^4.2.0",
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
@@ -30,7 +30,7 @@
     "chai-http": "^4.3.0",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
-    "mocha": "^7.1.1",
+    "mocha": "^7.1.2",
     "nodemon": "^2.0.3",
     "nyc": "^15.0.1"
   }
