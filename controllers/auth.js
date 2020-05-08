@@ -1,5 +1,5 @@
 const db = require('../models')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const privateKey = process.env.JWT_PRIVATE_KEY
@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
             res.status(400).send({message: 'Content can not be empty'})
         }
 
-        const hash = await bcrypt.hash(req.body.password, saltRounds)
+        const hash = await bcrypt.hashSync(req.body.password, saltRounds)
         const newUser = {name: req.body.name, password: hash}
         await User.create(newUser)
         res.status(201).send(newUser)
@@ -32,7 +32,7 @@ exports.signIn = async (req, res) => {
             res.status(401).send({message: 'Authentication failed. User not found'})
         }
 
-        const match = await bcrypt.compare(password, user.password)
+        const match = await bcrypt.compareSync(password, user.password)
 
         if (match) {
             const token = jwt.sign({ userId: user.id }, privateKey, { expiresIn: 60 * 15 })
