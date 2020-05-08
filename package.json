@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "start-nodemon": "nodemon app.js",
-    "migrate-start": "npm install -g sequelize-cli && sequelize db:migrate && node app.js",
+    "migrate-start": "./node_modules/sequelize-cli/bin/sequelize db:migrate && node app.js",
     "test": "cross-env NODE_ENV=test JWT_PRIVATE_KEY=test-secret JWT_SALT_ROUNDS=10 nyc --reporter=text mocha --exit",
     "code-coverage-report": "cross-env NODE_ENV=test nyc --reporter=html mocha --exit",
     "lint": "eslint . --fix"
@@ -22,6 +22,7 @@
     "pg": "^8.0.3",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.7",
+    "sequelize-cli": "^5.5.1",
     "sqlite3": "^4.2.0",
     "swagger-ui-express": "^4.1.4"
   },
