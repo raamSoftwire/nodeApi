@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "start-nodemon": "nodemon app.js",
+    "migrate-start": "sequelize db:migrate && node app.js",
     "test": "cross-env NODE_ENV=test JWT_PRIVATE_KEY=test-secret JWT_SALT_ROUNDS=10 nyc --reporter=text mocha --exit",
     "code-coverage-report": "cross-env NODE_ENV=test nyc --reporter=html mocha --exit",
     "lint": "eslint . --fix"
