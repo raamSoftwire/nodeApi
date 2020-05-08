@@ -6,7 +6,7 @@ const config = require(__dirname + '/../config/config.js')[env]
 const db = {}
 
 console.log("Env:" + env);
-console.log("Config:" + config);
+console.log("Config:" + JSON.stringify(config));
 
 let sequelize
 sequelize = new Sequelize(config.database, config.username, config.password, config)
