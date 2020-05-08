@@ -9,7 +9,9 @@ exports.findAll = async (req, res) => {
     try {
         const name = req.query.name
         const condition = name ? {name: { [Op.iLike]: `%${name}%`}} : null
+        console.log("Successfully reached here!")
         const users = await User.findAll({where: condition})
+        console.log("Successfully reached here! 2")
         res.send(users)
     }
     catch {
