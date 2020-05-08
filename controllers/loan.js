@@ -8,7 +8,7 @@ exports.findAll = async (req, res) => {
         res.send(loans)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -27,7 +27,7 @@ exports.findById = async (req, res) => {
         res.send(loan)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -47,7 +47,7 @@ exports.create = async (req, res) => {
         res.status(201).send(newLoan)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 

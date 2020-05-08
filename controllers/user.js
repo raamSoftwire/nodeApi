@@ -13,7 +13,7 @@ exports.findAll = async (req, res) => {
         res.send(users)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -33,7 +33,7 @@ exports.findById = async (req, res) => {
         res.send(user)
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
 
@@ -68,7 +68,7 @@ exports.update = async (req, res) => {
         res.status(204).end()
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 
 }
@@ -86,6 +86,6 @@ exports.delete = async (req, res) => {
         res.status(204).end()
     }
     catch {
-        res.status(400).end({message: 'Something went wrong'})
+        res.status(400).send('Something went wrong')
     }
 }
