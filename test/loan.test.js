@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = require('chai').expect;
 const moment = require('moment')
 
-const app = require('../index.js');
+const app = require('../app.js');
 const db = require('../models');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
