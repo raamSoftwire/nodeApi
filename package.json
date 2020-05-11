@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "migrate-start": "./node_modules/sequelize-cli/lib/sequelize db:migrate && node index.js",
     "test": "cross-env NODE_ENV=test JWT_PRIVATE_KEY=test-secret JWT_SALT_ROUNDS=10 nyc --reporter=text mocha --exit",
     "code-coverage-report": "cross-env NODE_ENV=test nyc --reporter=html mocha --exit",
     "lint": "eslint . --fix"
