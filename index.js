@@ -9,7 +9,7 @@ const {Auth, Book, Copy, Loan, User} = require('./routes/index')
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => res.send('Bookish API. Go to /api-docs/ for swagger docs'))
 
 app.use('/auth', Auth)
 app.use('/books', Book)
