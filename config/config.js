@@ -1,3 +1,13 @@
+console.log(JSON.stringify(
+    {
+    username: process.env.RDS_USERNAME,
+        password: process.env.RDS_PASSWORD,
+        database: process.env.RDS_DB_NAME,
+        host: process.env.RDS_HOSTNAME,
+        dialect: 'postgres'
+    }
+))
+
 module.exports = {
     development: {
         username: 'node_api_db',
